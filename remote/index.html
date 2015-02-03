@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+        
+        document.addEventListener( 'click', function(){
+            
+            socket.emit( 'start' );            
+        })
+    </script>
+    
+</body>
+</html>
