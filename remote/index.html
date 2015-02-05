@@ -6,8 +6,16 @@
 <body>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io();
-        
+        var socket = io();
+    
+        socket.on( 'connect', function(){
+            
+            var room = location.href.match( /(\?|&)room=(.*?)(&|#|$)/ )[ 2 ];
+            
+            socket.emit( 'joinRoom', room );
+            
+        })
+    
         document.addEventListener( 'click', function(){
             
             socket.emit( 'start' );            

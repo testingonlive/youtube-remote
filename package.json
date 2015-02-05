@@ -4,6 +4,7 @@
   "description": "control youtube video via websockets and socket.io",
   "dependencies": {
     "express": "^4.11.2",
+    "random-word-by-length": "^0.1.0",
     "socket.io": "^1.3.2"
   }
 }
