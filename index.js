@@ -30,6 +30,42 @@ var assignRoom = (function(){
 }())
 
 
+// @TODO make ASYNC
+var rooms = (function(){
+    var _rooms = [];
+    
+    return {
+        
+        assignRoom: function _assignRoom(){
+            var room = randWord( 4 );
+        
+            if( !~_rooms.indexOf( room ) ) {
+                _rooms.push( room );
+                return room;
+            } else {
+                return _assignRoom();
+                       
+            }              
+            
+        },
+        
+        unassignRoom: function( room ){
+            var _index = _rooms.indexOf( room );
+            
+            if ( ~_index ) return _rooms.splice( _index, 1 );
+            
+        }
+        
+        
+    }
+    
+    
+    
+}());
+
+
+
+
 io.on( 'connection', function( socket ){
     
     var _room;
@@ -46,6 +82,11 @@ io.on( 'connection', function( socket ){
         socket.join( _room )
         
         callback( _room );
+    });
+    
+    
+    socket.on( 'disconnect', function(){
+        // remove room
     });
     
     
