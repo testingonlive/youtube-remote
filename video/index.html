@@ -1,6 +1,38 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <style>
+            /* css i'll move at some point */
+            html, body {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;  
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            iframe {
+                transition: box-shadow 750ms;
+            }
+
+            .playing iframe {
+                box-shadow: 0 0 45px 30px grey;
+            }
+      
+      
+          </style>
+    </head>
+    
   <body>
+      
+      
+      
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
@@ -9,6 +41,8 @@
       
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player"></div>
+    <span>Go to "http://jacob-bandit-3000.codio.io/remote#room" to use the remote</span>
+     
 
     <script>
       // 2. This code loads the IFrame Player API code asynchronously.
