@@ -70,12 +70,7 @@ io.on( 'connection', function( socket ){
     
     var _room;
     
-    socket.on( 'joinRoom', function( room ){
-       socket.join( room );
-        
-        _room = room;
-    });
-    
+    // event listeners for events from video
     socket.on( 'requestRoom', function( callback ){
         _room = assignRoom();
                
@@ -84,15 +79,36 @@ io.on( 'connection', function( socket ){
         callback( _room );
     });
     
+    socket.on( 'point', function( data ){
+        // bounce the point event to the remote
+        socket.to( _room ).broadcast.emit( 'point', data );
+    });
+    
+    
+    // event listners for events from remote
+    socket.on( 'joinRoom', function( room ){
+       socket.join( room );
+        
+        _room = room;
+    });
+    
+    socket.on( 'start', function(){
+        socket.to( _room ).broadcast.emit( 'start' );
+    });
+    
+    socket.on( 'skip', function( data ){
+        // bounce skip event to video
+        socket.to( _room ).broadcast.emit( 'skip', data );
+    });
+    
+    
     
     socket.on( 'disconnect', function(){
         // remove room
     });
     
     
-    socket.on( 'start', function(){
-        socket.to( _room ).broadcast.emit( 'start' );
-    });
+    
     
     
     console.log( 'a user connected' );

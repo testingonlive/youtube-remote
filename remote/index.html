@@ -88,16 +88,42 @@
     
         socket.on( 'connect', function(){
             
-            var room = location.href.match( /(\?|&)room=(.*?)(&|#|$)/ )[ 2 ];
+            var room = location.hash.substring( 1 ),
+                boxes = document.querySelectorAll( '.box' );
+                    
             
             socket.emit( 'joinRoom', room );
             
-        })
-    
-        document.addEventListener( 'click', function(){
+            socket.on( 'point', function( data ){
+                // reset the classes
+                [].forEach.call( boxes, function( elm ){
+                    elm.classList.remove( 'active' );    
+                });
+                
+                // assuming data structure for now
+                boxes[ data.id ].classList.add( 'active' );
+            });
             
-            socket.emit( 'start' );            
-        })
+            // skip
+            [].forEach.call( boxes, function( elm, ind ){
+                elm.addEventListener( 'click', function( evt ){
+                    socket.emit( 'skip', ind );
+                })
+            })
+            
+            // play/pause button
+            document.querySelector( '.nav' ).addEventListener( 'click', function(){
+            
+                socket.emit( 'start' );            
+            });
+            
+        });
+    
+        
+        
+        
+        
+        
     </script>
     
 </body>
