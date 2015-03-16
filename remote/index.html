@@ -1,86 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-    /* css i'll move at some point */
-         html, body {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;  
-        }
-        
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .row {
-            width: 100%;
-            height: 45%
-        }
-        
-        .box {
-            width: 50%;
-            height: 100%;
-            float: left;
-            background-position: center;
-            background-size: cover;
-            -webkit-filter: blur(15px);
-        }
-        
-        .box.active {
-            -webkit-filter: blur(0);
-        }
-        
-        .one {
-            background-image: url( https://placekitten.com/g/200/300 );
-        }
-        
-        .two {
-            background-image: url( https://placekitten.com/g/300/200 );
-        }
-        
-        .three {
-            background-image: url( https://placekitten.com/g/500/600 );
-        }
-        
-        .four {
-            background-image: url( https://placekitten.com/g/500/500 );
-        }
-        
-        .nav {
-            height: 10%;
-            width: 100%;
-            display: flex;
-            align-content: center;
-            justify-content: center;
-        }
-        
-        .nav span {
-            font-size: 7vw;
-        }
-        
-    
-    </style>
+    <link rel="stylesheet"  href="./style.css" type="text/css" />
 </head>
 <body>
     
-    <div class="row">
-        <div class="box one"></div>
-        <div class="box two"></div>
+    <div class="cont">
+        <div class="box"><span data-action="play" class="icon-play3"></span></div>
+        <div class="box"><span data-action="pause" class="icon-pause2"></span></div>
+        <div class="box"><span data-action="voldown" class="icon-volume-decrease"></span></div>
+        <div class="box"><span data-action="volup" class="icon-volume-increase"></span></div>
     </div>
-    <div class="row">
-        <div class="box three"></div>
-        <div class="box four"></div>
-    </div>  
-    
-    
-    <div class="nav">
-        <span>play / pause</span>
-    </div>  
-    
-    
+        
     
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -89,40 +20,22 @@
         socket.on( 'connect', function(){
             
             var room = location.hash.substring( 1 ),
-                boxes = document.querySelectorAll( '.box' );
-                    
+                cont = document.querySelector( '.cont' );
             
+             
             socket.emit( 'joinRoom', room );
             
-            socket.on( 'point', function( data ){
-                // reset the classes
-                [].forEach.call( boxes, function( elm ){
-                    elm.classList.remove( 'active' );    
-                });
-                
-                // assuming data structure for now
-                boxes[ data.id ].classList.add( 'active' );
-            });
+           
+             // click / touch callback
+            function doStuff( evt ){
+                evt.target.dataset.action && socket.emit( 'action', evt.target.dataset.action );
+            }
             
-            // skip
-            [].forEach.call( boxes, function( elm, ind ){
-                elm.addEventListener( 'click', function( evt ){
-                    socket.emit( 'skip', ind );
-                })
-            })
-            
-            // play/pause button
-            document.querySelector( '.nav' ).addEventListener( 'click', function(){
-            
-                socket.emit( 'start' );            
-            });
+            cont.addEventListener( 'click', doStuff );
+            cont.addEventListener( 'touchstart', doStuff );
             
         });
     
-        
-        
-        
-        
         
     </script>
     

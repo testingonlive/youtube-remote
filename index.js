@@ -1,7 +1,10 @@
-var app = require( 'express' )();
+var express = require( 'express' );
+var app = express();
 var http = require( 'http' ).Server( app );
 var io = require( 'socket.io' )( http );
 var randWord = require( 'random-word-by-length' );
+
+app.use( express.static( __dirname + '/css' ) );
 
 app.get( '/', function( req, res ){
     res.sendFile( __dirname + '/video/index.html' ); 
@@ -70,7 +73,9 @@ io.on( 'connection', function( socket ){
     
     var _room;
     
-    // event listeners for events from video
+    /*
+     * events from the video
+     */
     socket.on( 'requestRoom', function( callback ){
         _room = assignRoom();
                
@@ -79,28 +84,22 @@ io.on( 'connection', function( socket ){
         callback( _room );
     });
     
-    socket.on( 'point', function( data ){
-        // bounce the point event to the remote
-        socket.to( _room ).broadcast.emit( 'point', data );
-    });
+        
     
-    
-    // event listners for events from remote
+    /*
+     * events from the remote
+     */
     socket.on( 'joinRoom', function( room ){
        socket.join( room );
         
         _room = room;
     });
     
-    socket.on( 'start', function(){
-        socket.to( _room ).broadcast.emit( 'start' );
-    });
-    
-    socket.on( 'skip', function( data ){
+      
+    socket.on( 'action', function( data ){
         // bounce skip event to video
-        socket.to( _room ).broadcast.emit( 'skip', data );
-    });
-    
+        socket.to( _room ).broadcast.emit( 'action', data );
+    });    
     
     
     socket.on( 'disconnect', function(){

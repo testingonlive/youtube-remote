@@ -91,81 +91,43 @@
                 socket.emit( 'requestRoom', function( room ){
                     document.querySelector( '#js-room' ).textContent = room;
                     console.log( room );
-                })
-          
-                socket.on( 'start', function(){
-                    
-                    if ( playing = !playing ) {
-                        _iframe.classList.add( 'playing' );
-                        event.target.playVideo();
-                    } else{
-                        _iframe.classList.remove( 'playing' );
-                        event.target.pauseVideo();
-                    } 
                 });
+          
                 
-                socket.on( 'skip', function( data ){
-                    player.seekTo( points[ data ].time, true );
-                });
-          
-          
-                requestAnimationFrame( function _frame(){
+                socket.on( 'action', function( data ){
+                    var _vol;
                     
-                    var _time = player.getCurrentTime();
-                    emitPoint( _time, points );
-                    
-                    requestAnimationFrame( _frame );
+                    switch( data ){
+                        
+                        case 'play':
+                            player.playVideo();
+                            break;
+                        
+                        case 'pause':
+                            player.pauseVideo();
+                            break;
+                        
+                        case 'voldown':
+                            _vol = player.getVolume();
+                            player.setVolume( _vol - 10 );
+                            break;
+                        
+                        case 'volup':
+                            _vol = player.getVolume();
+                            player.setVolume( _vol + 10 );
+                            break;
+                        
+                        default:
+                            break;
+                    }
                 });
-                
                 
             });
             
         }); 
           
           
-        // hardcode some data for the sake to testing
-        var points = [
-               {
-                id: 0,
-                time: 10,
-                name: 'Frank'
-            },
-            {
-                id: 1,
-                time: 20,
-                name: 'Bob'
-            },
-            {
-                id: 2,
-                time: 30,
-                name: 'Alice'
-            },
-            {
-                id: 3,
-                time: 40,
-                name: 'Rita'
-            }
-        ];
-          
-          
-        emitPoint = function( time, points ){            
-            
-            if ( !emitPoint.justDone ){
-                points.some( function( elm ){
-                    if ( Math.abs( elm.time - time ) < 0.5 ){
-                        console.log( elm );
-                        
-                        socket.emit( 'point', elm );
-
-                        setTimeout( function(){
-                            emitPoint.justDone = false
-                        }, 2e3 );
-
-                        return emitPoint.justDone = true;
-                    }
-                });
-            }
-        };
+        
           
           
           
