@@ -3,7 +3,9 @@ html, body {
     height: 100%;
     padding: 0;
     margin: 0;  
-    background: #fff;
+    background: #222;
+    -webkit-font-smoothing: antialiased;
+    color: #555;
 }
 
 .cont {
@@ -13,16 +15,17 @@ html, body {
 }
 
 .box {
-    width: 49vh;
-    height: 49%;
-    margin: 0.5%;
+    border: 2vh solid #555;
+    width: 46vh; 
+    height: 46%;
+    margin: 2%;
     float: left;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 45vh;
-    color: #333;
-    text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+    font-size: 35vh;
+    box-sizing: border-box;
+    border-radius: 25%;
 }
 
 /*icon font from icon moon*/
