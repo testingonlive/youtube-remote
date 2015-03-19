@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1" />
+    
     <link rel="stylesheet"  href="./css/style.css" type="text/css" />
 </head>
 <body>
@@ -35,8 +37,20 @@
                 evt.target.dataset.action && socket.emit( 'action', evt.target.dataset.action );
             }
             
-            cont.addEventListener( 'click', doStuff );
+            // add style
+            function addStyle( evt ){
+                evt.target.parentElement.classList.add( 'on' );
+            }
+            
+            // remove style
+            function removeStyle( evt ){
+                evt.target.parentElement.classList.remove( 'on' );
+            }
+            
             cont.addEventListener( 'touchstart', doStuff );
+            cont.addEventListener( 'touchstart', addStyle );
+            cont.addEventListener( 'touchend', removeStyle );
+
             
         });
     

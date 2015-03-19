@@ -9,23 +9,31 @@ html, body {
 }
 
 .cont {
-    width: 100vh;
+    width: calc(200vh / 4);
     height: 100%;
     margin: 0 auto;
 }
 
+/*css inspired from http://codepen.io/waynespiegel/pen/sroaK*/
 .box {
     border: 2vh solid #555;
-    width: 46vh; 
-    height: 46%;
-    margin: 2%;
+    width: calc(100vh / 4 - 4vh);
+    height: calc(100% / 4 - 4%);
+    margin: 4%;
     float: left;
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 35vh;
+    align-items: center;    
+    font-size: calc(50vh / 4);
     box-sizing: border-box;
     border-radius: 25%;
+    transition: color .5s, border-color .5s;    
+}
+
+.on {
+    color: #fd0;
+    border-color: #fd0;
+    transition: 0s;
 }
 
 /*icon font from icon moon*/

@@ -95,26 +95,51 @@
           
                 
                 socket.on( 'action', function( data ){
-                    var _vol;
+                    var _vol,
+                        _pos;
                     
                     switch( data ){
                         
                         case 'play':
                             player.playVideo();
+                            _iframe.classList.add( 'playing' );
                             break;
                         
                         case 'pause':
                             player.pauseVideo();
+                            _iframe.classList.remove( 'playing' );
                             break;
                         
                         case 'voldown':
+                            player.unMute();                            
                             _vol = player.getVolume();
                             player.setVolume( _vol - 10 );
                             break;
                         
                         case 'volup':
+                            player.unMute(); 
                             _vol = player.getVolume();
                             player.setVolume( _vol + 10 );
+                            break;
+                            
+                        case 'mute':
+                            player.mute();
+                            player.setVolume( 0 );
+                            break;
+                            
+                        case 'stop':
+                            player.stopVideo();
+                            _iframe.classList.remove( 'playing' )
+                            break;
+                            
+                        case 'skipback':
+                            _pos = player.getCurrentTime();
+                            player.seekTo( _pos - player.getDuration() / 100 );
+                            break;
+                            
+                        case 'skipforward':
+                            _pos = player.getCurrentTime();
+                            player.seekTo( _pos + player.getDuration() / 100 );
                             break;
                         
                         default:

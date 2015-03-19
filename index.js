@@ -4,7 +4,7 @@ var http = require( 'http' ).Server( app );
 var io = require( 'socket.io' )( http );
 var randWord = require( 'random-word-by-length' );
 
-app.use( express.static( __dirname + '/css' ) );
+app.use( '/css', express.static( __dirname + '/remote/css' ) );
 
 app.get( '/', function( req, res ){
     res.sendFile( __dirname + '/video/index.html' ); 
